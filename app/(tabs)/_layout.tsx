@@ -1,14 +1,17 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import { Tabs } from 'expo-router';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-export default function TabLayout() {
+const Drawer = createDrawerNavigator();
+
+function TabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
@@ -25,7 +28,8 @@ export default function TabLayout() {
           },
           default: {},
         }),
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -43,3 +47,35 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+export default function TabLayout() {
+  return (
+    <Drawer.Navigator
+      screenOptions={({ navigation }) => ({
+        drawerType: 'front',
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: '#84bd00', // Change this to your desired header background color
+        },
+        headerTitleStyle: {
+          color: '#FFFFFF', // Change this to your desired text color
+          fontWeight: 'bold', // Optional: Make the text bold
+        },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+            <IconSymbol
+              name="line.horizontal.3"
+              size={28}
+              color="#000"
+              style={{ marginLeft: 16 }}
+            />
+          </TouchableOpacity>
+        ),
+      })}
+    >
+      <Drawer.Screen name="Main" component={TabNavigator} options={{ title: 'VegOut!' }} />
+      {/* Add more screens for the drawer menu here */}
+    </Drawer.Navigator>
+  );
+}
+
