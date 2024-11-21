@@ -1,74 +1,113 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const leaderboardData = [
+  { rank: 1, name: 'Gracie', eaten: 1, points: 12960 },
+  { rank: 2, name: 'Anisha', eaten: 0, points: 1200 },
+  { rank: 3, name: 'greenkoi', eaten: 0, points: 0 },
+  { rank: 4, name: 'Bornhayn07', eaten: 0, points: 0 },
+  { rank: 5, name: 'Michael Pearce', eaten: 0, points: 0 },
+  { rank: 6, name: 'Anna Eastman', eaten: 0, points: 0 },
+  { rank: 7, name: 'Spencer Sutton', eaten: 0, points: 675 },
+  { rank: 8, name: 'Michael Swail', eaten: 0, points: 0 },
+  { rank: 9, name: 'Allison', eaten: 0, points: 0 },
+  { rank: 10, name: 'Debrah', eaten: 0, points: 1200 },
+];
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      {/* Progress Section */}
+      <View style={styles.progressContainer}>
+        <Text style={styles.progressHeader}>MY PROGRESS</Text>
+        <Text style={styles.progressValue}>1 / 30</Text>
+        <Text style={styles.progressSubtext}>
+          Eat 14.5 veggies per day to complete the challenge! The challenge ends in 1 day!
+        </Text>
+      </View>
+
+      {/* Leaderboard Section */}
+      <View style={styles.leaderboardContainer}>
+        <Text style={styles.leaderboardHeader}>Friends Leaderboard</Text>
+        <FlatList
+          data={leaderboardData}
+          keyExtractor={(item) => item.rank.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.leaderboardRow}>
+              <Text style={[styles.text, styles.rank]}>{item.rank}</Text>
+              <Text style={[styles.text, styles.name]}>{item.name}</Text>
+              <Text style={[styles.text, styles.eaten]}>{item.eaten} / 30</Text>
+              <Text style={[styles.text, styles.points]}>{item.points}</Text>
+            </View>
+          )}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#F5F5F5',
+  },
+  progressContainer: {
+    backgroundColor: '#E8F5E9',
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+  },
+  progressHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#388E3C',
+  },
+  progressValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#388E3C',
+    textAlign: 'center',
+  },
+  progressSubtext: {
+    fontSize: 14,
+    color: '#757575',
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  leaderboardContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    padding: 16,
+    flex: 1,
+  },
+  leaderboardHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#424242',
+    textAlign: 'center',
+  },
+  leaderboardRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center', // Vertically centers the items
+    paddingVertical: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  text: {
+    textAlign: 'center', // Ensures text within each column is centered
+    flex: 1, // Allows the text to expand and take up equal space
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  rank: {
+    flex: 1,
+  },
+  name: {
+    flex: 2,
+  },
+  eaten: {
+    flex: 1,
+  },
+  points: {
+    flex: 1,
   },
 });
