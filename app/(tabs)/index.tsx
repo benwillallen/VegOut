@@ -82,10 +82,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   leaderboardHeader: {
+    backgroundColor: '#441d67',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#424242',
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   leaderboardRow: {
