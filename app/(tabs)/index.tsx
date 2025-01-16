@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 const leaderboardData = [
   { rank: 1, name: 'Gracie', eaten: 1, points: 12960 },
   { rank: 2, name: 'Anisha', eaten: 0, points: 1200 },
-  { rank: 3, name: 'greenkoi', eaten: 0, points: 0 },
+  { rank: 3, name: 'greenkoi', eaten: 0, points: 0 }, 
   { rank: 4, name: 'Bornhayn07', eaten: 0, points: 0 },
   { rank: 5, name: 'Michael Pearce', eaten: 0, points: 0 },
   { rank: 6, name: 'Anna Eastman', eaten: 0, points: 0 },

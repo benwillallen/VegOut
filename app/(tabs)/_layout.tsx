@@ -1,13 +1,23 @@
 import React from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import { Tabs } from 'expo-router';
-import { HapticTab } from '@/components/HapticTab';
+import { Platform, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Text } from 'react-native';
+import HomeScreen from './index';
+import ExploreScreen from './explore';
+import VeggiesScreen from './Veggies';
+import RecipesScreen from './Recipes';
+import FriendsScreen from './Friends';
+import GroupsScreen from './Groups';
+import BadgesScreen from './Badges';
+import RaiseMoneyScreen from './RaiseMoney';
+import MapScreen from './Map';
+import AboutScreen from './AboutRecipeForSuccess';
+import HelpScreen from './Help';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,11 +29,12 @@ function TabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarButton: ({ onPress, children }) => (
+          <TouchableOpacity onPress={onPress}>{children}</TouchableOpacity>
+        ),
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
           default: {},
@@ -55,11 +66,11 @@ export default function TabLayout() {
         drawerType: 'front',
         headerShown: true,
         headerStyle: {
-          backgroundColor: '#84bd00', // Change this to your desired header background color
+          backgroundColor: '#84bd00',
         },
         headerTitleStyle: {
-          color: '#FFFFFF', // Change this to your desired text color
-          fontWeight: 'bold', // Optional: Make the text bold
+          color: '#FFFFFF',
+          fontWeight: 'bold',
         },
         headerLeft: () => (
           <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
@@ -73,8 +84,36 @@ export default function TabLayout() {
         ),
       })}
     >
-      <Drawer.Screen name="Main" component={TabNavigator} options={{ title: 'VegOut!' }} />
-      {/* Add more screens for the drawer menu here */}
+      <Drawer.Screen name="Main" options={{ title: 'VegOut!' }}>
+    {() => <TabNavigator />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Veggies" options={{ title: 'Veggies!' }}>
+    {() => <VeggiesScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Recipes" options={{ title: 'Recipes' }}>
+    {() => <RecipesScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Friends" options={{ title: 'Friends' }}>
+    {() => <FriendsScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Groups" options={{ title: 'Groups' }}>
+    {() => <GroupsScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Badges" options={{ title: 'Badges' }}>
+    {() => <BadgesScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Raise Money" options={{ title: 'Raise Money' }}>
+    {() => <RaiseMoneyScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Map" options={{ title: 'Map' }}>
+    {() => <MapScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="About Recipe For Success" options={{ title: 'About Recipe For Success' }}>
+    {() => <AboutScreen />}
+  </Drawer.Screen>
+  <Drawer.Screen name="Help" options={{ title: 'Help' }}>
+    {() => <HelpScreen />}
+  </Drawer.Screen>
     </Drawer.Navigator>
   );
 }
