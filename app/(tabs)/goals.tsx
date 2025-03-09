@@ -1,109 +1,183 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Platform,
+  View,
+  SectionList,
+  Text,
+  TouchableOpacity,
+  TouchableHighlight,
+} from "react-native";
+import { useState } from "react";
+import "react-native-get-random-values";
+import tw from "twrnc";
+import { v4 as uuidv4 } from "uuid";
+import GoalItem from "../../components/goals_components/GoalItem";
+// import { Collapsible } from "@/components/Collapsible";
+// import { ExternalLink } from "@/components/ExternalLink";
+// import ParallaxScrollView from "@/components/ParallaxScrollView";
+// import { ThemedText } from "@/components/ThemedText";
+// import { ThemedView } from "@/components/ThemedView";
+// import { IconSymbol } from "@/components/ui/IconSymbol";
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+type ItemType = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  completed?: boolean;
+};
 
-export default function TabTwoScreen() {
+type SectionType = {
+  id: string;
+  title: string;
+  data: ItemType[];
+};
+
+const sections: SectionType[] = [
+  {
+    id: uuidv4(),
+    title: "Nutrition",
+    data: [
+      {
+        id: uuidv4(),
+        title: "Protein Intake",
+        description: "Eat 100 grams of protein per day",
+        date: "2025-03-08",
+        completed: false,
+      },
+      {
+        id: uuidv4(),
+        title: "Protein Intake",
+        description: "Eat 100 grams of protein per day",
+        date: "2025-03-08",
+        completed: false,
+      },
+      {
+        id: uuidv4(),
+        title: "Protein Intake",
+        description: "Eat 100 grams of protein per day",
+        date: "2025-03-08",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: uuidv4(),
+    title: "Physical Activity",
+    data: [
+      {
+        id: uuidv4(),
+        title: "Cardio Target",
+        description: "Do 45 minutes of cardio three times a week.",
+        date: "2024-03-04",
+        completed: false,
+      },
+      {
+        id: uuidv4(),
+        title: "Cardio Target",
+        description: "Do 45 minutes of cardio three times a week.",
+        date: "2024-03-04",
+        completed: false,
+      },
+      {
+        id: uuidv4(),
+        title: "Cardio Target",
+        description: "Do 45 minutes of cardio three times a week.",
+        date: "2024-03-04",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: uuidv4(),
+    title: "Lifestyle",
+    data: [
+      {
+        id: uuidv4(),
+        title: "Get Better Sleep",
+        description: "Sleep 8 hours per night on average.",
+        date: "2024-03-01",
+        completed: true,
+      },
+      {
+        id: uuidv4(),
+        title: "Get Better Sleep",
+        description: "Sleep 8 hours per night on average.",
+        date: "2024-03-01",
+        completed: true,
+      },
+      {
+        id: uuidv4(),
+        title: "Get Better Sleep",
+        description: "Sleep 8 hours per night on average.",
+        date: "2024-03-01",
+        completed: true,
+      },
+    ],
+  },
+];
+
+type GoalsProps = {
+  goalData: SectionType[];
+};
+
+export default function Goals({ goalData = sections }: GoalsProps) {
+  const [collapsedSections, setCollapsedSections] = useState<
+    Record<string, boolean>
+  >({});
+
+  const toggleSection = (sectionId: string) => {
+    setCollapsedSections((prevSections) => ({
+      ...prevSections,
+      [sectionId]: !prevSections[sectionId],
+    }));
+  };
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <View style={tw`bg-gray-100 flex-1 pt-4`}>
+      <View style={tw`mt-0 mx-auto min-w-80`}>
+        <SectionList
+          sections={goalData}
+          keyExtractor={(section) => section.id}
+          renderItem={({ item, section }) => {
+            return !collapsedSections[section.id] ? (
+              <GoalItem {...item}></GoalItem>
+            ) : null;
+          }}
+          renderSectionHeader={({ section }) => (
+            <View style={tw`bg-gray-100 py-1 z-10`}>
+              <TouchableOpacity
+                onPress={() => toggleSection(section.id)}
+                style={tw`bg-green-100 p-2 rounded-md flex-row justify-between border-green-500 border-l-4 mt-auto min-w-6 mt-2`}
+              >
+                <Text
+                  style={tw`mt-0 flex-row items-center text-xl font-medium `}
+                >
+                  {section.title}
+                </Text>
+                <Text style={tw`text-gray-600`}>
+                  {collapsedSections[section.id] ? "▼" : "▲"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          stickySectionHeadersEnabled={true}
+          contentContainerStyle={tw`pb-24`}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Nutrition Goals</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
+    color: "#808080",
     bottom: -90,
     left: -35,
-    position: 'absolute',
+    position: "absolute",
   },
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
 });
