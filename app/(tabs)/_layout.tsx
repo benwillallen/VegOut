@@ -48,7 +48,7 @@ function TabNavigator() {
         name="nutrition_tracking"
         options={{
           title: 'Nutrition Tracking',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.line.uptrend.xyaxis" color={color} />,
         }}
       />
       <Tabs.Screen
